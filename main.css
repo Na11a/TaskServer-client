@@ -1,0 +1,75 @@
+body{
+    background-color: rgba(250,250,0,0.2);
+    margin-left: 7%;
+    margin-right: 7%;
+}
+#tasks{
+    background-color: rgba(250,250,0,0.5);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
+div.task-block{
+    background-color:#Faa;
+    margin-bottom: 15px;
+    border: 1px solid black;
+    flex-basis: 32%;
+    position: relative;
+}
+div h1{
+    text-align: center;
+    padding-bottom: 15px;
+    margin-top: 0px;
+    text-transform: capitalize;
+}
+
+div.task-block input{
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.overdue time{
+    color:red;
+}
+div.task-block time{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+}
+div.task-block p{
+    font-size:20px;
+    padding-bottom: 15px;
+    text-align: center;
+    filter:contrast(0.5)
+}
+
+div.with-done h1{
+    color:grey;
+    text-decoration:line-through;
+}
+
+button.delete{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+button#close-mode{
+    position: fixed;
+    left:0px;
+    width:7%;
+    background-color:rgba(250, 0, 0, 0.5);
+    height: 15%;
+    font-size: 15px;
+}
+button#open-mode{
+    position: fixed;
+    right:0px;
+    width:7%;
+    background-color:rgba(250, 0, 0, 0.5);
+    height: 15%;
+    font-size: 15px;
+}
