@@ -1,6 +1,5 @@
 class Task {
-    constructor(title) {
-
+    constructor(title,done,desc,dueDate) {
         if (typeof title === 'object') {
             Object.assign(this, title)
             if (this.dueDate === '') {
@@ -17,11 +16,8 @@ class Task {
 
 }
 
-let tags = new Map()
 
-tasks = [
 
-]
 
 let openModeElement = document.getElementById('open-mode');
 let tasksElement = document.getElementById('tasks');
@@ -30,7 +26,7 @@ let checkBoxElement = document.getElementsByTagName('input');
 
 function createDivWithClasses(task) {
     let add_class = `<div id="task-${task.id}" class = "task-block `;
-    console.log(task);
+    console.log(`${task.title} created`);
     if (task.done == true) {
         add_class += ` with-done`;
     }
@@ -65,7 +61,6 @@ function addTags(task) {
         task.desc = '';
     }
     if (task.dueDate != null) {
-        console.log(typeof task.dueDate)
         deadliine = task.dueDate.substr(0, 10);
     }
     return `<h1>${task.title}</h1> \n
@@ -85,11 +80,9 @@ function appendTask(task) {
 tasksElement.addEventListener('click', (event) => {
     const target = event.target;
     if (target.tagName === 'BUTTON') {
-        let task_id = parseInt(target.closest('.task-block').id.split('-')[1])
-        let task_index = tasks.findIndex(t => t.id == task_id)
-        tasks.splice(task_index, 1)
         target.closest('.task-block').remove();
-        console.log(tasks)
+        let taskId = getTaskId(target);
+        deleteTask(taskId);
     }
 })
 
@@ -114,8 +107,14 @@ openModeElement.addEventListener('click', (event) => {
     }
 })
 
-tasksElement.addEventListener('click', (event) => {
-    if (event.target.tagName == 'INPUT') {
+tasksElement.addEventListener('click', async function checkboxHandler(event){
+    const target = event.target;
+    if (target.tagName == 'INPUT') {
+        let taskId = getTaskId(target);
+        task = await getTaskById(taskId);
+        console.log(task)
+        task.done = target.checked
+        updateTask(task);
         event.target.closest('.task-block').classList.toggle('with-done')
     }
 })
@@ -158,7 +157,7 @@ function createTask(task) {
 }
 
 function updateTask(task){
-    return fetch(tasksEndpoint + `${task.id}`,{
+    return fetch(tasksEndpoint + `/${task.id}`,{
         method: 'PUT',
         headers:{
             'Content-Type': 'application/json'
@@ -166,4 +165,22 @@ function updateTask(task){
         body:JSON.stringify(task)
 
     })
+    .then(response=>response.json())
+}
+function deleteTask(task_id){
+    return fetch(tasksEndpoint + `/${task_id}`,{
+        method:'DELETE',
+        headers:{
+            'Content-Type':'application/json'
+        },
+
+    })
+}
+function getTaskById(taskId){
+    return fetch(tasksEndpoint + `/${taskId}`)
+            .then(response => response.json())
+}
+
+function getTaskId(target){
+    return task_id = parseInt(target.closest('.task-block').id.split('-')[1])
 }
