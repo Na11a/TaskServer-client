@@ -1,5 +1,5 @@
 class Task {
-    constructor(title,done,desc,dueDate) {
+    constructor(title, done, desc, dueDate) {
         if (typeof title === 'object') {
             Object.assign(this, title)
             if (this.dueDate === '') {
@@ -16,32 +16,29 @@ class Task {
 
 }
 
-
-
-
 let openModeElement = document.getElementById('open-mode');
 let tasksElement = document.getElementById('tasks');
 let closeModeElement = document.getElementById('close-mode');
 let checkBoxElement = document.getElementsByTagName('input');
 
 function createDivWithClasses(task) {
-    let add_class = `<div id="task-${task.id}" class = "task-block `;
+    let classes = `<div id="task-${task.id}" class = "task-block `;
     console.log(`${task.title} created`);
     if (task.done == true) {
-        add_class += ` with-done`;
+        classes += ` with-done`; //`<div id="task-${task.id}" class = "task-block with-done`
     }
     if (task.desc != null) {
-        add_class += ` with-desc`;
+        classes += ` with-desc`; //`<div id="task-${task.id}" class = "task-block `
     }
 
     if (task.dueDate != null) {
-        add_class += ` with-due_date`;
+        classes += ` with-due_date`;
         if (checkOverDue(task)) {
-            add_class += ` overdue`;
+            classes += ` overdue`;
         }
     }
 
-    return add_class + `">`;
+    return classes + `">`;
 }
 
 function checkOverDue(task) {
@@ -71,10 +68,8 @@ function addTags(task) {
 }
 
 function appendTask(task) {
-
     div_class = createDivWithClasses(task) + addTags(task)
     tasksElement.innerHTML += div_class;
-
 }
 
 tasksElement.addEventListener('click', (event) => {
@@ -107,17 +102,17 @@ openModeElement.addEventListener('click', (event) => {
     }
 })
 
-tasksElement.addEventListener('click', async function checkboxHandler(event){
+tasksElement.addEventListener('click', async function checkboxHandler(event) {
     const target = event.target;
     if (target.tagName == 'INPUT') {
         let taskId = getTaskId(target);
         task = await getTaskById(taskId);
         console.log(task)
-        task.done = target.checked
+        task.done = target.checked;
         updateTask(task);
-        event.target.closest('.task-block').classList.toggle('with-done')
+        event.target.closest('.task-block').classList.toggle('with-done');
     }
-})
+});
 
 tasksElement.addEventListener('click', (event) => {
     if (event.target.tagName == 'INPUT') {
@@ -135,15 +130,15 @@ taskForm.addEventListener('submit', (event) => {
         task.done = true;
     }
     createTask(task)
-    .then(appendTask)
-    .then(_=>taskForm.reset())
+        .then(appendTask)
+        .then(_ => taskForm.reset())
 });
 
-const tasksEndpoint = 'http://localhost:5000/api/tasktodo'
+const tasksEndpoint = 'http://localhost:5000/api/tasktodo';
 
 fetch(tasksEndpoint)
     .then(response => response.json())
-    .then(tasks => tasks.forEach(appendTask))
+    .then(tasks => tasks.forEach(appendTask));
 
 function createTask(task) {
     return fetch(tasksEndpoint, {
@@ -151,36 +146,36 @@ function createTask(task) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body:JSON.stringify(task)
+        body: JSON.stringify(task)
     })
-    .then(response=>response.json())
+        .then(response => response.json())
 }
 
-function updateTask(task){
-    return fetch(tasksEndpoint + `/${task.id}`,{
+function updateTask(task) {
+    return fetch(tasksEndpoint + `/${task.id}`, {
         method: 'PUT',
-        headers:{
+        headers: {
             'Content-Type': 'application/json'
         },
-        body:JSON.stringify(task)
+        body: JSON.stringify(task)
 
     })
-    .then(response=>response.json())
+        .then(response => response.json())
 }
-function deleteTask(task_id){
-    return fetch(tasksEndpoint + `/${task_id}`,{
-        method:'DELETE',
-        headers:{
-            'Content-Type':'application/json'
+function deleteTask(task_id) {
+    return fetch(tasksEndpoint + `/${task_id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
         },
 
     })
 }
-function getTaskById(taskId){
+function getTaskById(taskId) {
     return fetch(tasksEndpoint + `/${taskId}`)
-            .then(response => response.json())
-}
+        .then(response => response.json())
+};
 
-function getTaskId(target){
+function getTaskId(target) {
     return task_id = parseInt(target.closest('.task-block').id.split('-')[1])
-}
+};
