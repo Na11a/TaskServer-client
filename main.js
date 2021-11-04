@@ -69,8 +69,8 @@ function addTags(task) {
         deadliine = task.dueDate.substr(0, 10);
     }
     return `<h1>${task.title}</h1> \n
-            <p>${task.desc}</p>\n 
-            <input type="checkbox"${status}>\n 
+            <p>${task.desc}</p>\n
+            <input type="checkbox"${status}>\n
             <time>${deadliine}</time>\n
             <button class="delete">Delete</button>`
 }
