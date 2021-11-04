@@ -1,7 +1,19 @@
 body{
     background-color: rgba(250,250,0,0.2);
-    margin-left: 7%;
-    margin-right: 7%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+header .title{
+  text-align: center;
+}
+.form{
+  margin-top: 50px;
+  padding: 20px;
+  border: solid black 1px;
+}
+.form h3{
+  text-align: center;
+  margin-bottom: 30px;
 }
 #tasks{
     background-color: rgba(250,250,0,0.5);
@@ -9,7 +21,7 @@ body{
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    
+
 }
 div.task-block{
     background-color:#Faa;
@@ -60,7 +72,7 @@ button.delete{
 button#close-mode{
     position: fixed;
     left:0px;
-    width:7%;
+    width:10%;
     background-color:rgba(250, 0, 0, 0.5);
     height: 15%;
     font-size: 15px;
@@ -68,7 +80,7 @@ button#close-mode{
 button#open-mode{
     position: fixed;
     right:0px;
-    width:7%;
+    width:10%;
     background-color:rgba(250, 0, 0, 0.5);
     height: 15%;
     font-size: 15px;
