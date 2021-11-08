@@ -18,19 +18,19 @@ class Task {
 }
 
 let tags = new Map()
-
 tasks = [
 
 ]
-
+let notDeadlineTasksButton = document.getElementById('no_deadline')
 let openModeElement = document.getElementById('open-mode');
 let tasksElement = document.getElementById('tasks');
 let closeModeElement = document.getElementById('close-mode');
 let checkBoxElement = document.getElementsByTagName('input');
+let total_no_deadline = document.getElementById('total_no_deadline');
+let searchInputElement = document.getElementById('searchInput')
 
 function createDivWithClasses(task) {
     let add_class = `<div id="task-${task.id}" class = "task-block `;
-    console.log(task);
     if (task.done == true) {
         add_class += ` with-done`;
     }
@@ -65,20 +65,24 @@ function addTags(task) {
         task.desc = '';
     }
     if (task.dueDate != null) {
-        console.log(typeof task.dueDate)
         deadliine = task.dueDate.substr(0, 10);
     }
     return `<h1>${task.title}</h1> \n
-            <p>${task.desc}</p>\n 
-            <input type="checkbox"${status}>\n 
+            <p>${task.desc}</p>\n
+            <input class="task-checkbox" type="checkbox"${status}>\n
             <time>${deadliine}</time>\n
             <button class="delete">Delete</button>`
 }
 
 function appendTask(task) {
+    tasks.push(task)
+    updateDOM(tasks)
 
-    div_class = createDivWithClasses(task) + addTags(task)
-    tasksElement.innerHTML += div_class;
+}
+function notDeadLineTasks(){
+
+  console.log(tasks.filter((task) => task.dueDate == null).length)
+  total_no_deadline.innerText = `${tasks.filter((task) => task.dueDate == null).length}`
 
 }
 
@@ -86,16 +90,21 @@ tasksElement.addEventListener('click', (event) => {
     const target = event.target;
     if (target.tagName === 'BUTTON') {
         let task_id = parseInt(target.closest('.task-block').id.split('-')[1])
-        let task_index = tasks.findIndex(t => t.id == task_id)
-        tasks.splice(task_index, 1)
-        target.closest('.task-block').remove();
+        task = tasks.find(task=>task.id===task_id)
+        tasks = tasks.filter(task=>task.id != task_id)
         console.log(tasks)
-    }
+        target.closest('.task-block').remove();
+        deleteTask(task)
+      }
+
 })
+
+
+
 
 closeModeElement.addEventListener('click', (event) => {
     closeModeElement.classList.add('on')
-    let elements = document.getElementsByTagName('input')
+    let elements = document.getElementsByClassName('task-checkbox')
     for (let element of elements) {
         if (element.checked) {
             element.closest('.task-block').style.display = 'none';
@@ -115,8 +124,16 @@ openModeElement.addEventListener('click', (event) => {
 })
 
 tasksElement.addEventListener('click', (event) => {
-    if (event.target.tagName == 'INPUT') {
-        event.target.closest('.task-block').classList.toggle('with-done')
+  const target = event.target
+    if (target.tagName == 'INPUT') {
+        let task_id = parseInt(target.closest('.task-block').id.split('-')[1])
+        task = tasks.find(task=>task.id === task_id)
+        if (task.done == true){
+          task.done = false
+        }
+        else (task.done = true)
+        updateTask(task)
+        updateDOM(tasks)
     }
 })
 
@@ -126,6 +143,12 @@ tasksElement.addEventListener('click', (event) => {
             event.target.closest('DIV').style.display = 'none';
         }
     }
+})
+
+searchInputElement.addEventListener('input',(event)=>{
+  title = event.target.value.toLowerCase()
+  console.log(tasks);
+  updateDOM(tasks.filter(task => new RegExp(title).test(task.title.toLowerCase())))
 })
 
 const taskForm = document.forms['task'];
@@ -158,12 +181,29 @@ function createTask(task) {
 }
 
 function updateTask(task){
-    return fetch(tasksEndpoint + `${task.id}`,{
-        method: 'PUT',
+    return fetch(tasksEndpoint + `/${task.id}`,{
+        method: 'Put',
         headers:{
             'Content-Type': 'application/json'
         },
         body:JSON.stringify(task)
-
     })
+}
+
+function deleteTask(task){
+  fetch(tasksEndpoint + `/${task.id}`,{
+    method: 'Delete',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body:JSON.stringify(task)
+  })
+}
+
+function updateDOM (list){
+  tasksElement.innerHTML = ``
+  list.forEach((task) => {
+    div_class = createDivWithClasses(task) + addTags(task)
+    tasksElement.innerHTML += div_class;
+  })
 }

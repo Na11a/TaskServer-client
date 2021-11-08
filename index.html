@@ -3,24 +3,55 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+    <title>TodoList</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
 </head>
 <body>
-    <button id="close-mode">Close finished tasks</button>
-    <button id="open-mode">Open all tasks</button>
+  <header>
+    <h1 class=title>My todoList</h1>
+      <input type="text" name="title" id="searchInput"class="form-control" placeholder="title" required oninvalid="this.setCustomValidity('Input title name')" oninput="setCustomValidity('')">
+
+      </div>
+
+    </form>
+  </header>
+  <main>
+    <button id="close-mode" class="control-btn">Close finished tasks</button>
+    <button id="open-mode" class="control-btn">Open all tasks</button>
+    <button id="no_deadline" onclick=`${notDeadLineTasks()}`> Count no deadline tasks </button>
+    <h3 id="total_no_deadline"></h3>
+
+
     <div id="tasks">
 
     </div>
-    <form name="task">
-        <input type="text" name="title" placeholder="title" required oninvalid="this.setCustomValidity('Input title name')" oninput="setCustomValidity('')">
-        <input type="text" name="desc" placeholder="description">
-        <input type="checkbox" name="done">
-        <input type="date" name="dueDate" placeholder="finish date">
-        <button type="submit">Add</button>
-    </form>
-</body>
+  </main>
+
+    <form name="task" class="form">
+      <h3>New task</h3>
+      <div class="form-group col-md-6">
+        <label for="exampleInputText">Task name</label>
+        <input type="text" name="title" class="form-control" placeholder="title" required oninvalid="this.setCustomValidity('Input title name')" oninput="setCustomValidity('')">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="exampleInputText">Task description</label>
+        <input type="text" name="desc" class="form-control" placeholder="description">
+      </div>
+        <div class="form-check col-md-6">
+          <label class="form-check-label" for="exampleCheck1">Done or not</label>
+          <input type="checkbox" class = "form-check-input" name="done">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputAddress2">Date</label>
+            <input type="date" name="dueDate" placeholder="finish date">
+
+        </div>
+        <button class="btn btn-primary" type="submit">Add</button>
+    </form></body>
+
 <script src='main.js'></script>
 
 </html>
