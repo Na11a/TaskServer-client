@@ -12,11 +12,19 @@
 <body>
   <header>
     <h1 class=title>My todoList</h1>
+      <input type="text" name="title" id="searchInput"class="form-control" placeholder="title" required oninvalid="this.setCustomValidity('Input title name')" oninput="setCustomValidity('')">
 
+      </div>
+
+    </form>
   </header>
   <main>
-    <button id="close-mode">Close finished tasks</button>
-    <button id="open-mode">Open all tasks</button>
+    <button id="close-mode" class="control-btn">Close finished tasks</button>
+    <button id="open-mode" class="control-btn">Open all tasks</button>
+    <button id="no_deadline" onclick=`${notDeadLineTasks()}`> Count no deadline tasks </button>
+    <h3 id="total_no_deadline"></h3>
+
+
     <div id="tasks">
 
     </div>
